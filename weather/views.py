@@ -17,15 +17,19 @@ def index(request):
     weather_data = []
     
     for city in cities:
-        city_api = url.format(city)
-        r = requests.get(city_api).json()
-        city_weather = {
-            'city': city.name,
-            'temperature': r['main']['temp'],
-            'description': r['weather'][0]['description'],
-            'icon': r['weather'][0]['icon'],
-        }
-        weather_data.append(city_weather)
+        try:
+            city_api = url.format(city)
+            r = requests.get(city_api).json()
+            city_weather = {
+                'city': city.name,
+                'temperature': r['main']['temp'],
+                'description': r['weather'][0]['description'],
+                'icon': r['weather'][0]['icon'],
+            }
+            weather_data.append(city_weather)
+        except Exception as e:
+            print(e)
+            pass
     
     context = {'weather_data': weather_data, 'form': form}
     return render(request, 'weather/weather.html', context)
