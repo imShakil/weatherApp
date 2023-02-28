@@ -7,13 +7,15 @@ from django.shortcuts import render
 
 def index(request):
     url = 'http://api.openweathermap.org/data/2.5/weather?q={}&units=imperial&appid=4274271153e3c4e31c8b1eab2479dd1a'
-
+    cities = City.objects.all()
+    
     if request.method == 'POST':
         form = CityForm(request.POST)
-        form.save
+        form.save()
     
-    cities = City.objects.all()
+    form = CityForm()    
     weather_data = []
+    
     for city in cities:
         city_api = url.format(city)
         r = requests.get(city_api).json()
